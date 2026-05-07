@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'sonner'
+import Home from './components/Home.jsx'
+import Login from './components/Login.jsx'
 
-import './App.css'
-
-const App = () => {
+export default function App() {
   return (
-    <div>
-      <p className="text-blue-700 font-bold">Hello world</p>
-    </div>
+    <BrowserRouter>
+      <Toaster position="top-right" richColors />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-
-
-export default App
