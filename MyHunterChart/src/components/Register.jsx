@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: email, password })
@@ -21,10 +22,8 @@ export default function Login() {
         setError(data.error)
         return
       }
-      localStorage.setItem('isLoggedIn', 'true')
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('username', data.username)
-      navigate('/symptoms')
+      setSuccess('Account created! Redirecting...')
+      setTimeout(() => navigate('/login'), 1500)
     } catch (err) {
       setError('Could not connect to server')
     }
@@ -34,10 +33,11 @@ export default function Login() {
     <div>
       <button onClick={() => navigate('/')}>Back to home</button>
 
-      <h1>Welcome back</h1>
-      <p>Sign in to your account</p>
+      <h1>New Patient</h1>
+      <p>Create your account</p>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
 
       <form onSubmit={handleSubmit}>
         <div>
@@ -62,19 +62,12 @@ export default function Login() {
           />
         </div>
 
-        <label>
-          <input type="checkbox" />
-          Remember me
-        </label>
-
-        <button type="submit">Sign in</button>
+        <button type="submit">Create Account</button>
       </form>
 
       <p>
-        No account?{' '}
-        <button onClick={() => navigate('/personal-info')}>
-          Create one
-        </button>
+        Already have an account?{' '}
+        <button onClick={() => navigate('/login')}>Sign in</button>
       </p>
     </div>
   )
