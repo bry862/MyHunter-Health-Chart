@@ -23,6 +23,40 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
+// Patient Model
+const PatientSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  firstName: String,
+  lastName: String,
+  dateOfBirth: String,
+  phone: String,
+  address: String,
+  city: String,
+  state: String,
+  zipCode: String,
+});
+
+const Patient = mongoose.model('Patient', PatientSchema);
+
+// Medical History Model
+const MedicalHistorySchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  conditions: [String],
+  additionalNotes: String,
+});
+const MedicalHistory = mongoose.model('MedicalHistory', MedicalHistorySchema);
+
+// Medical History
+app.post('/api/patient/medical-history', async (req, res) => {
+  try {
+    const history = new MedicalHistory(req.body);
+    await history.save();
+    res.json({ message: 'Medical history saved!' });
+  } catch (err) {
+    res.status(400).json({ error: 'Could not save medical history' });
+  }
+});
+
 // Register
 app.post('/api/auth/register', async (req, res) => {
   const { username, password } = req.body;
@@ -48,6 +82,17 @@ app.post('/api/auth/login', async (req, res) => {
     res.json({ token, username });
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Save Patient Info
+app.post('/api/patient/info', async (req, res) => {
+  try {
+    const patient = new Patient(req.body);
+    await patient.save();
+    res.json({ message: 'Patient info saved!' });
+  } catch (err) {
+    res.status(400).json({ error: 'Could not save patient info' });
   }
 });
 
