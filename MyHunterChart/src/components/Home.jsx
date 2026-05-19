@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-export default function Home() {
+function Home() {
   const navigate = useNavigate()
 
   return (
@@ -28,7 +28,7 @@ export default function Home() {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
           <button
-            onClick={() => navigate('/personal-info')}
+            onClick={() => navigate('/create-account')}
             className="p-8 bg-white border-2 border-teal-200 rounded-2xl hover:shadow-lg hover:border-teal-400 transition-all text-left"
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-2">New Patient</h2>
@@ -55,3 +55,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home
