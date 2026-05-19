@@ -22,6 +22,7 @@ function Register() {
         setError(data.error)
         return
       }
+      localStorage.setItem('username', email)
       setSuccess('Account created! Redirecting...')
       setTimeout(() => navigate('/patient-info'), 1500)
     } catch (err) {

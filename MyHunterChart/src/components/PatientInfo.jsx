@@ -18,11 +18,26 @@ function PatientInfo() {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleContinue = (e) => {
-    e.preventDefault()
+const handleContinue = async (e) => {
+  e.preventDefault()
+  try {
+    const username = localStorage.getItem('username')
+    const res = await fetch('http://localhost:5000/api/patient/info', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...formData, username })
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      alert(data.error)
+      return
+    }
     localStorage.setItem('userInfo', JSON.stringify(formData))
     navigate('/medical-history')
+  } catch (err) {
+    alert('Could not connect to server')
   }
+}
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
