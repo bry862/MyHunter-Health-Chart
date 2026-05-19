@@ -54,19 +54,31 @@ function MedicalHistory() {
     setNoneChecked(null)
   }
 
-  const handleContinue = () => {
+const handleContinue = async () => {
+  try {
+    const username = localStorage.getItem('username')
+    const conditions = [
+      ...selectedConditions,
+      ...(otherCondition ? [`Other: ${otherCondition}`] : []),
+      ...(noneChecked ? [noneChecked === 'none' ? 'None' : 'Prefer not to say'] : []),
+    ]
+    const res = await fetch('http://localhost:5000/api/patient/medical-history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, conditions, additionalNotes })
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      alert(data.error)
+      return
+    }
     const existing = JSON.parse(localStorage.getItem('userInfo') || '{}')
-    localStorage.setItem('userInfo', JSON.stringify({
-      ...existing,
-      conditions: [
-        ...selectedConditions,
-        ...(otherCondition ? [`Other: ${otherCondition}`] : []),
-        ...(noneChecked ? [noneChecked === 'none' ? 'None' : 'Prefer not to say'] : []),
-      ],
-      additionalNotes,
-    }))
+    localStorage.setItem('userInfo', JSON.stringify({ ...existing, conditions, additionalNotes }))
     navigate('/symptoms')
+  } catch (err) {
+    alert('Could not connect to server')
   }
+}
 
   const CheckRow = ({ label, checked, onChange }) => (
     <label className="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:border-teal-400 cursor-pointer transition-colors">
