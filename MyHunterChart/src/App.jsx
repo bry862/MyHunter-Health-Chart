@@ -4,6 +4,7 @@ import Home from './components/Home.jsx'
 import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
 import PatientInfo from './components/PatientInfo.jsx'
+import MedicalHistory from './components/MedicalHistory.jsx'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<Register />} />
         <Route path="/patient-info" element={<PatientInfo />} />
+        <Route path="/medical-history" element={<MedicalHistory/>}/>
       </Routes>
     </BrowserRouter>
   )
