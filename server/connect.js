@@ -49,8 +49,11 @@ const MedicalHistory = mongoose.model('MedicalHistory', MedicalHistorySchema);
 // Medical History
 app.post('/api/patient/medical-history', async (req, res) => {
   try {
-    const history = new MedicalHistory(req.body);
-    await history.save();
+    const history = await MedicalHistory.findOneAndUpdate(
+      { username: req.body.username },
+      { ...req.body },
+      { upsert: true, new: true }
+    );
     res.json({ message: 'Medical history saved!' });
   } catch (err) {
     res.status(400).json({ error: 'Could not save medical history' });
@@ -88,8 +91,11 @@ app.post('/api/auth/login', async (req, res) => {
 // Save Patient Info
 app.post('/api/patient/info', async (req, res) => {
   try {
-    const patient = new Patient(req.body);
-    await patient.save();
+    const patient = await Patient.findOneAndUpdate(
+      { username: req.body.username },
+      { ...req.body },
+      { upsert: true, new: true }
+    );
     res.json({ message: 'Patient info saved!' });
   } catch (err) {
     res.status(400).json({ error: 'Could not save patient info' });
