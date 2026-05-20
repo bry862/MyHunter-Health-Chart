@@ -1,8 +1,12 @@
-// components/Cart.jsx
+import Navbar from './Navbar'
+
 function Cart() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-black-300"> Under Construction </h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navbar />
+      <div className="flex items-center justify-center flex-grow">
+        <h1 className="text-4xl font-bold text-black-300"> Cart is missing</h1>
+      </div>
     </div>
   )
 }
