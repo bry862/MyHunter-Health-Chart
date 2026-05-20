@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Navbar from './Navbar'
 
 const CONDITIONS = [
   'Allergies',
@@ -54,31 +55,31 @@ function MedicalHistory() {
     setNoneChecked(null)
   }
 
-const handleContinue = async () => {
-  try {
-    const username = localStorage.getItem('username')
-    const conditions = [
-      ...selectedConditions,
-      ...(otherCondition ? [`Other: ${otherCondition}`] : []),
-      ...(noneChecked ? [noneChecked === 'none' ? 'None' : 'Prefer not to say'] : []),
-    ]
-    const res = await fetch('http://localhost:5000/api/patient/medical-history', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, conditions, additionalNotes })
-    })
-    const data = await res.json()
-    if (!res.ok) {
-      alert(data.error)
-      return
+  const handleContinue = async () => {
+    try {
+      const username = localStorage.getItem('username')
+      const conditions = [
+        ...selectedConditions,
+        ...(otherCondition ? [`Other: ${otherCondition}`] : []),
+        ...(noneChecked ? [noneChecked === 'none' ? 'None' : 'Prefer not to say'] : []),
+      ]
+      const res = await fetch('http://localhost:5000/api/patient/medical-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, conditions, additionalNotes })
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        alert(data.error)
+        return
+      }
+      const existing = JSON.parse(localStorage.getItem('userInfo') || '{}')
+      localStorage.setItem('userInfo', JSON.stringify({ ...existing, conditions, additionalNotes }))
+      navigate('/symptoms')
+    } catch (err) {
+      alert('Could not connect to server')
     }
-    const existing = JSON.parse(localStorage.getItem('userInfo') || '{}')
-    localStorage.setItem('userInfo', JSON.stringify({ ...existing, conditions, additionalNotes }))
-    navigate('/symptoms')
-  } catch (err) {
-    alert('Could not connect to server')
   }
-}
 
   const CheckRow = ({ label, checked, onChange }) => (
     <label className="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:border-teal-400 cursor-pointer transition-colors">
@@ -94,22 +95,7 @@ const handleContinue = async () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-
-      {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <h1
-          onClick={() => navigate('/')}
-          className="text-xl font-bold text-teal-600 cursor-pointer"
-        >
-          Hunter Health Care
-        </h1>
-        <button
-          onClick={() => navigate('/patient-info')}
-          className="text-sm text-gray-500 hover:text-teal-600 transition-colors"
-        >
-          Back
-        </button>
-      </nav>
+      <Navbar />
 
       {/* Card */}
       <div className="flex items-center justify-center flex-grow px-6 py-12">

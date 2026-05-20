@@ -1,20 +1,13 @@
+// components/Home.jsx
 import { useNavigate } from 'react-router-dom'
+import Navbar from './Navbar'
 
 function Home() {
   const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-teal-600">Hunter Health Care</h1>
-        <button
-          onClick={() => navigate('/cart')}
-          className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100"
-        >
-          View Cart
-        </button>
-      </nav>
+      <Navbar />
 
       {/* Hero */}
       <main className="flex flex-col items-center justify-center flex-grow px-6 py-20 text-center">

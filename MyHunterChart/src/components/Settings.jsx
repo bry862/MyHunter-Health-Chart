@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 
-function PatientInfo() {
+function Settings() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     firstName: '',
@@ -14,44 +14,60 @@ function PatientInfo() {
     state: '',
     zipCode: '',
   })
+  const [success, setSuccess] = useState('')
+  const [error, setError] = useState('')
+
+  // Pre-fill from localStorage on load
+  useEffect(() => {
+    const stored = localStorage.getItem('userInfo')
+    if (stored) {
+      setFormData(JSON.parse(stored))
+    }
+  }, [])
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+    setSuccess('')
+    setError('')
   }
 
-  const handleContinue = async (e) => {
+  const handleSave = async (e) => {
     e.preventDefault()
     try {
       const username = localStorage.getItem('username')
+      const token = localStorage.getItem('token')
       const res = await fetch('http://localhost:5000/api/patient/info', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ ...formData, username })
       })
       const data = await res.json()
       if (!res.ok) {
-        alert(data.error)
+        setError(data.error)
         return
       }
       localStorage.setItem('userInfo', JSON.stringify(formData))
-      navigate('/medical-history')
+      setSuccess('Your information has been updated.')
     } catch (err) {
-      alert('Could not connect to server')
+      setError('Could not connect to server')
     }
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navbar />
+      <Navbar showBack backPath="/" backLabel="Back to home" />
 
-      {/* Card */}
       <div className="flex items-center justify-center flex-grow px-6 py-12">
         <div className="w-full max-w-2xl bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
 
           {/* Header */}
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">Personal Information</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">Settings</h2>
+          <p className="text-sm text-gray-500 mb-6">Update your personal information</p>
 
-          <form onSubmit={handleContinue}>
+          <form onSubmit={handleSave}>
 
             {/* Name Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
@@ -172,6 +188,18 @@ function PatientInfo() {
               </div>
             </div>
 
+            {/* Success / Error messages */}
+            {success && (
+              <p className="text-sm text-teal-700 bg-teal-50 border border-teal-200 rounded-lg px-4 py-2 mb-4">
+                {success}
+              </p>
+            )}
+            {error && (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4">
+                {error}
+              </p>
+            )}
+
             {/* Actions */}
             <div className="flex gap-4">
               <button
@@ -185,7 +213,7 @@ function PatientInfo() {
                 type="submit"
                 className="flex-1 py-3 rounded-lg bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700 transition-colors"
               >
-                Continue
+                Save Changes
               </button>
             </div>
 
@@ -197,4 +225,4 @@ function PatientInfo() {
   )
 }
 
-export default PatientInfo
+export default Settings
