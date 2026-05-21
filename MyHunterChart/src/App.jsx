@@ -12,6 +12,8 @@ import Cart from './components/Cart.jsx'
 import Checkout from './components/Checkout.jsx'
 import About from './components/About.jsx'
 import Confirmation from "./components/Confirmation";
+import WaitingRoom from './components/WaitingRoom'
+
 export default function App() {
   const [cart, setCart] = useState([]);
   return (
@@ -29,6 +31,7 @@ export default function App() {
         <Route path="/checkout"element={<Checkout cart={cart} />}/>
         <Route path="/about" element={<About />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/waitingroom" element={<WaitingRoom />} />
       </Routes>
     </BrowserRouter>
   )
