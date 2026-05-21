@@ -2,6 +2,7 @@ import Navbar from './Navbar'
 import mariamaImg from "../assets/mariama.jpeg";
 import dixonImg from "../assets/Dixon.jpeg";
 import andrewImg from "../assets/Andrew.jpeg";
+import brayhanimg from "../assets/Brayhan.jpeg";
 function About() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -62,6 +63,11 @@ function About() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white border rounded-xl p-6 shadow-sm">
+              <img
+                src={brayhanimg}
+                alt="Brayhan"
+                className="w-32 h-32 object-cover rounded-full mx-auto mb-4 border-4 border-teal-500"
+                />
               <h3 className="text-xl font-semibold text-gray-900">Brayhan</h3>
               <p className="text-gray-500 mt-2">
                Created mockups for user interfaces
