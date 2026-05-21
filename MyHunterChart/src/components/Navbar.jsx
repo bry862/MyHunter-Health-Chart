@@ -64,6 +64,13 @@ function Navbar({ showBack = false, backPath = '/', backLabel = 'Back' }) {
           Cart
         </button>
 
+        <button
+        onClick={() => navigate('/about')}
+         className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:border-teal-400 hover:text-teal-600 transition-colors"
+        >
+        About Us
+      </button>
+
         {/* Show user dropdown if logged in, otherwise show Sign in button */}
         {username ? (
           <div className="relative" ref={dropdownRef}>
