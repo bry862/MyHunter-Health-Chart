@@ -1,7 +1,7 @@
 import Navbar from './Navbar'
 import mariamaImg from "../assets/mariama.jpeg";
-import dixonImg from "../assets/dixon.jpeg";
-import andrewImg from "../assets/andrew.jpeg";
+import dixonImg from "../assets/Dixon.jpeg";
+import andrewImg from "../assets/Andrew.jpeg";
 function About() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -88,3 +88,4 @@ function About() {
 }
 
 export default About
+
